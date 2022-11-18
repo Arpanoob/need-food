@@ -13,10 +13,10 @@ import com.google.firebase.auth.FirebaseAuth;
 
 public class LoginActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
-    private EditText editText1;
-    private EditText editText2;
+    private EditText email;
+    private EditText password;
     private Button button;
-    private TextView textView;
+    private TextView toSignup;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,9 +25,13 @@ public class LoginActivity extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
 
-        editText1 = findViewById(R.id.email);
-        textView = findViewById(R.id.to_signup);
-        editText2 = findViewById(R.id.password);
+        if (mAuth.getCurrentUser() != null) {
+            toHomeActivity();
+        }
+
+        email = findViewById(R.id.email);
+        toSignup = findViewById(R.id.to_signup);
+        password = findViewById(R.id.password);
         button = findViewById(R.id.login_btn);
     }
 
@@ -35,25 +39,30 @@ public class LoginActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         button.setOnClickListener(view -> {
-            String email = editText1.getText().toString();
-            String password = editText2.getText().toString();
+            String email = this.email.getText().toString();
+            String password = this.password.getText().toString();
             if (email.isEmpty() || password.isEmpty()) {
-                Toast.makeText(this, "Invalid", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Fields are required.", Toast.LENGTH_SHORT).show();
             } else {
                 mAuth.signInWithEmailAndPassword(email, password).addOnSuccessListener(authResult -> {
-                    Intent intent = new Intent(this, HomeActivity.class);
-                    startActivity(intent);
-                    finish();
+                    toHomeActivity();
                 }).addOnFailureListener(e -> {
-                    Toast.makeText(this, "Invalid", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "Unable to Login.", Toast.LENGTH_SHORT).show();
                 });
             }
         });
 
-        textView.setOnClickListener(view -> {
+        toSignup.setOnClickListener(view -> {
             Intent intent=new Intent(this,SignupActivity.class);
             startActivity(intent);
             finish();
         });
+    }
+
+    public void toHomeActivity() {
+        Intent intent = new Intent(this, HomeActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
+        finish();
     }
 }

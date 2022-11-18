@@ -29,6 +29,10 @@ public class SignupActivity extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
 
+        if (mAuth.getCurrentUser() != null) {
+            toHomeActivity();
+        }
+
         textView = findViewById(R.id.lg);
         editText1 = findViewById(R.id.email);
         editText2 = findViewById(R.id.password);
@@ -43,14 +47,12 @@ public class SignupActivity extends AppCompatActivity {
             String email = editText1.getText().toString();
             String pass = editText2.getText().toString();
             if (email.isEmpty() || pass.isEmpty()) {
-                Toast.makeText(getApplicationContext(), "Error", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Fields are required.", Toast.LENGTH_SHORT).show();
             } else {
                 mAuth.createUserWithEmailAndPassword(email, pass).addOnSuccessListener(authResult -> {
-                    Intent intent = new Intent(this, HomeActivity.class);
-                    startActivity(intent);
-                    finish();
+                    toHomeActivity();
                 }).addOnFailureListener(e -> {
-                    Toast.makeText(getApplicationContext(), "Error", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "Unable to Signup.", Toast.LENGTH_SHORT).show();
                 });
             }
         });
@@ -60,6 +62,13 @@ public class SignupActivity extends AppCompatActivity {
             startActivity(intent);
             finish();
         });
+    }
+
+    public void toHomeActivity() {
+        Intent intent = new Intent(this, HomeActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
+        finish();
     }
 }
 
