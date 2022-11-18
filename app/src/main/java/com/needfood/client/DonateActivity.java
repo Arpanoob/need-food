@@ -10,9 +10,12 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
@@ -20,6 +23,17 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.GeoPoint;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.needfood.client.models.Donate;
+
+import java.io.IOException;
+import java.util.List;
+import java.util.Locale;
 
 public class DonateActivity extends AppCompatActivity implements LocationListener {
     private static final int LOCATION_PERMISSION_CODE = 101;
@@ -29,6 +43,7 @@ public class DonateActivity extends AppCompatActivity implements LocationListene
     private EditText name, phone;
     private Button donateBtn;
     private LocationManager locationManager;
+    private StorageReference storageReference;
 
     private String photoUrl = null, username = null;
     private boolean isPhotoPicked = false;
@@ -40,6 +55,7 @@ public class DonateActivity extends AppCompatActivity implements LocationListene
         setContentView(R.layout.activity_donate);
 
         username = getIntent().getStringExtra("NAME");
+        storageReference = FirebaseStorage.getInstance().getReference("donate");
 
         photo = findViewById(R.id.photo);
         name = findViewById(R.id.name);
@@ -92,7 +108,45 @@ public class DonateActivity extends AppCompatActivity implements LocationListene
                 Toast.makeText(this, "Phone required.", Toast.LENGTH_SHORT).show();
                 return;
             }
+
+            StorageReference reference = storageReference.child(FirebaseAuth.getInstance().getUid());
+            reference.putFile(Uri.parse(photoUrl)).addOnSuccessListener(taskSnapshot -> {
+                reference.getDownloadUrl().addOnSuccessListener(uri -> {
+                    String address = getAddress();
+                    GeoPoint location = new GeoPoint(latitude, longitude);
+
+                    DocumentReference documentReference = FirebaseFirestore.getInstance().collection("donate").document();
+                    String id = documentReference.getId();
+
+                    Donate donate = new Donate(
+                            address,
+                            FirebaseAuth.getInstance().getUid(),
+                            id,
+                            location,
+                            name.getText().toString(),
+                            phone.getText().toString(),
+                            uri.toString()
+                    );
+                    documentReference.set(donate).addOnSuccessListener(unused -> {
+                        Toast.makeText(this, "Donation active.", Toast.LENGTH_SHORT).show();
+                        finish();
+                    });
+                });
+            });
         });
+    }
+
+    private String getAddress() {
+        List<Address> addresses;
+        Geocoder geocoder = new Geocoder(this, Locale.getDefault());
+
+        try {
+            addresses = geocoder.getFromLocation(latitude, longitude, 1);
+            return addresses.get(0).getAddressLine(0);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     private void getCurrentLocation() {
