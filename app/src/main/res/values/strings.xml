@@ -19,4 +19,6 @@
     <string name="need_some_food">Need Some Food</string>
     <string name="donate_desc">Provide food to those how require it can reduce the food wastage to a certain extent if we establish a connection between those who need it.</string>
     <string name="need_desc">When you are unable to help anybody due to financial reasons, you can help the ones who can help and the ones who need it.</string>
+    <string name="enter_your_details_to_donate_food">Enter your details to donate food.</string>
+    <string name="add_for_donation">Add for Donation</string>
 </resources>

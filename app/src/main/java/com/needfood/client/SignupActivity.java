@@ -13,6 +13,10 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class SignupActivity extends AppCompatActivity {
     EditText editText1;
@@ -44,13 +48,25 @@ public class SignupActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         button.setOnClickListener(view -> {
+            String name = this.name.getText().toString();
             String email = editText1.getText().toString();
             String pass = editText2.getText().toString();
-            if (email.isEmpty() || pass.isEmpty()) {
+
+            if (name.isEmpty() || email.isEmpty() || pass.isEmpty()) {
                 Toast.makeText(getApplicationContext(), "Fields are required.", Toast.LENGTH_SHORT).show();
             } else {
                 mAuth.createUserWithEmailAndPassword(email, pass).addOnSuccessListener(authResult -> {
-                    toHomeActivity();
+                    Map<String, Object> map = new HashMap<String, Object>();
+                    map.put("name", name);
+                    map.put("photo", null);
+                    map.put("msgToken", null);
+
+                    FirebaseFirestore.getInstance().collection("user").document(authResult.getUser().getUid()).set(map).addOnSuccessListener(unused -> {
+                        toHomeActivity();
+                    }).addOnFailureListener(e -> {
+                        Toast.makeText(this, "Unable to Signup.", Toast.LENGTH_SHORT).show();
+                        mAuth.signOut();
+                    });
                 }).addOnFailureListener(e -> {
                     Toast.makeText(getApplicationContext(), "Unable to Signup.", Toast.LENGTH_SHORT).show();
                 });

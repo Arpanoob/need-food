@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.needfood.client.DonateActivity;
@@ -59,8 +60,13 @@ public class HomeFragment extends Fragment {
         });
 
         help.setOnClickListener(view -> {
-            Intent intent = new Intent(view.getContext(), DonateActivity.class);
-            startActivity(intent);
+            FirebaseFirestore.getInstance().collection("user").document(FirebaseAuth.getInstance().getUid()).get().addOnSuccessListener(documentSnapshot -> {
+                String name = documentSnapshot.getString("name");
+
+                Intent intent = new Intent(view.getContext(), DonateActivity.class);
+                intent.putExtra("NAME", name);
+                startActivity(intent);
+            });
         });
     }
 }
