@@ -1,8 +1,11 @@
 package com.needfood.client;
 
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.FragmentActivity;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
@@ -24,6 +27,7 @@ import com.needfood.client.databinding.ActivityDonateDetailBinding;
 import com.needfood.client.models.Donate;
 
 public class DonateDetailActivity extends FragmentActivity implements OnMapReadyCallback {
+    private static final int CALL_PERMISSION_CODE = 223;
     private GoogleMap mMap;
     private ActivityDonateDetailBinding binding;
     private double lat = 0, log = 0;
@@ -56,6 +60,8 @@ public class DonateDetailActivity extends FragmentActivity implements OnMapReady
         mAddress = findViewById(R.id.address);
         removeBtn = findViewById(R.id.remove_active_donation);
         callBtn = findViewById(R.id.make_call);
+
+        checkCallPermission();
     }
 
     @Override
@@ -95,5 +101,11 @@ public class DonateDetailActivity extends FragmentActivity implements OnMapReady
         Intent callIntent = new Intent(Intent.ACTION_CALL);
         callIntent.setData(Uri.parse("tel:" + phone));
         startActivity(callIntent);
+    }
+
+    private void checkCallPermission() {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) == PackageManager.PERMISSION_DENIED) {
+            ActivityCompat.requestPermissions(this, new String[]{ Manifest.permission.CALL_PHONE }, CALL_PERMISSION_CODE);
+        }
     }
 }
