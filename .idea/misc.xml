@@ -5,6 +5,7 @@
       <map>
         <entry key="..\:/Users/Arpan/AndroidStudioProjects/NeedFood/app/src/main/res/drawable/shade_block.xml" value="0.133" />
         <entry key="..\:/Users/Arpan/AndroidStudioProjects/NeedFood/app/src/main/res/layout/activity_donate.xml" value="0.23229166666666667" />
+        <entry key="..\:/Users/Arpan/AndroidStudioProjects/NeedFood/app/src/main/res/layout/activity_donate_detail.xml" value="0.2287179487179487" />
         <entry key="..\:/Users/Arpan/AndroidStudioProjects/NeedFood/app/src/main/res/layout/activity_home.xml" value="0.2" />
         <entry key="..\:/Users/Arpan/AndroidStudioProjects/NeedFood/app/src/main/res/layout/activity_log_in.xml" value="0.24270833333333333" />
         <entry key="..\:/Users/Arpan/AndroidStudioProjects/NeedFood/app/src/main/res/layout/activity_login.xml" value="0.23229166666666667" />
@@ -14,6 +15,7 @@
         <entry key="..\:/Users/Arpan/AndroidStudioProjects/NeedFood/app/src/main/res/layout/donate_item.xml" value="0.23229166666666667" />
         <entry key="..\:/Users/Arpan/AndroidStudioProjects/NeedFood/app/src/main/res/layout/fragment_home.xml" value="0.23229166666666667" />
         <entry key="..\:/Users/Arpan/AndroidStudioProjects/NeedFood/app/src/main/res/layout/item_donate.xml" value="0.23229166666666667" />
+        <entry key="..\:/Users/Arpan/AndroidStudioProjects/NeedFood/app/src/main/res/layout/item_donate_2.xml" value="0.23229166666666667" />
         <entry key="..\:/Users/Arpan/AndroidStudioProjects/NeedFood/app/src/main/res/menu/bottom_navigation.xml" value="0.23229166666666667" />
       </map>
     </option>

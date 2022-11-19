@@ -21,4 +21,7 @@
     <string name="need_desc">When you are unable to help anybody due to financial reasons, you can help the ones who can help and the ones who need it.</string>
     <string name="enter_your_details_to_donate_food">Enter your details to donate food.</string>
     <string name="add_for_donation">Add for Donation</string>
+    <string name="get_some_available_food">Get some available food.</string>
+    <string name="title_activity_donate_details">DonateDetailsActivity</string>
+    <string name="title_activity_donate_detail">DonateDetailActivity</string>
 </resources>
