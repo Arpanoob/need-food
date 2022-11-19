@@ -29,4 +29,5 @@
     <string name="donation">Donation</string>
     <string name="profile">Profile</string>
     <string name="remove_from_active_donation">Remove from active donation</string>
+    <string name="logout">Logout</string>
 </resources>

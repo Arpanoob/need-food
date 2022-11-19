@@ -1,5 +1,6 @@
 package com.needfood.client.adapter;
 
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.needfood.client.DonateDetailActivity;
 import com.needfood.client.R;
 import com.needfood.client.models.Donate;
 
@@ -33,6 +35,18 @@ public class DonateRecyclerAdapter extends FirestoreRecyclerAdapter<Donate, Dona
         holder.setPhone(donate.getPhone());
         holder.setPhoto(donate.getPhoto());
         holder.setPhone(donate.getPhone());
+
+        holder.itemView.setOnClickListener(view -> {
+            Intent intent = new Intent(view.getContext(), DonateDetailActivity.class);
+            intent.putExtra("LAT", donate.getLocation().getLatitude());
+            intent.putExtra("LONG", donate.getLocation().getLongitude());
+            intent.putExtra("NAME", donate.getName());
+            intent.putExtra("PHONE", donate.getPhone());
+            intent.putExtra("ADDRESS", donate.getAddress());
+            intent.putExtra("BY", donate.getBy());
+            intent.putExtra("ID", donate.getId());
+            view.getContext().startActivity(intent);
+        });
     }
 
     public static class DonateHolder extends RecyclerView.ViewHolder {

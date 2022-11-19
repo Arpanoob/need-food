@@ -92,8 +92,8 @@ public class DonateDetailActivity extends FragmentActivity implements OnMapReady
     }
 
     private void makeCall() {
-//        Intent callIntent = new Intent(Intent.ACTION_CALL);
-//        callIntent.setData(Uri.parse("tel:" + phone));
-//        startActivity(callIntent);
+        Intent callIntent = new Intent(Intent.ACTION_CALL);
+        callIntent.setData(Uri.parse("tel:" + phone));
+        startActivity(callIntent);
     }
 }
