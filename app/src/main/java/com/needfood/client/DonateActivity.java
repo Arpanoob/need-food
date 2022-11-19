@@ -17,6 +17,7 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Pair;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -112,15 +113,16 @@ public class DonateActivity extends AppCompatActivity implements LocationListene
             StorageReference reference = storageReference.child(FirebaseAuth.getInstance().getUid());
             reference.putFile(Uri.parse(photoUrl)).addOnSuccessListener(taskSnapshot -> {
                 reference.getDownloadUrl().addOnSuccessListener(uri -> {
-                    String address = getAddress();
+                    Pair<String, String> address = getAddress();
                     GeoPoint location = new GeoPoint(latitude, longitude);
 
                     DocumentReference documentReference = FirebaseFirestore.getInstance().collection("donate").document();
                     String id = documentReference.getId();
 
                     Donate donate = new Donate(
-                            address,
+                            address.first,
                             FirebaseAuth.getInstance().getUid(),
+                            address.second.toLowerCase(Locale.ROOT),
                             id,
                             location,
                             name.getText().toString(),
@@ -136,13 +138,13 @@ public class DonateActivity extends AppCompatActivity implements LocationListene
         });
     }
 
-    private String getAddress() {
+    private Pair<String, String> getAddress() {
         List<Address> addresses;
         Geocoder geocoder = new Geocoder(this, Locale.getDefault());
 
         try {
             addresses = geocoder.getFromLocation(latitude, longitude, 1);
-            return addresses.get(0).getAddressLine(0);
+            return new Pair<String, String>(addresses.get(0).getAddressLine(0), addresses.get(0).getLocality());
         } catch (IOException e) {
             e.printStackTrace();
             return null;

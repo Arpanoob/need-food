@@ -12,8 +12,8 @@ import com.needfood.client.DonateDetailActivity;
 import com.needfood.client.R;
 import com.needfood.client.models.Donate;
 
-public class DonationNeedRecyclerAdapter extends FirestoreRecyclerAdapter<Donate, DonateRecyclerAdapter.DonateHolder> {
-    public DonationNeedRecyclerAdapter(@NonNull FirestoreRecyclerOptions<Donate> options) {
+public class MyDonationRecyclerAdapter extends FirestoreRecyclerAdapter<Donate, DonateRecyclerAdapter.DonateHolder> {
+    public MyDonationRecyclerAdapter(@NonNull FirestoreRecyclerOptions<Donate> options) {
         super(options);
     }
 

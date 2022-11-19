@@ -5,16 +5,17 @@ import com.google.firebase.firestore.GeoPoint;
 import java.io.Serializable;
 
 public class Donate implements Serializable {
-    private String address, by, id;
+    private String address, by, city, id;
     private GeoPoint location;
     private String name, phone, photo;
 
     public Donate() {
     }
 
-    public Donate(String address, String by, String id, GeoPoint location, String name, String phone, String photo) {
+    public Donate(String address, String by, String city, String id, GeoPoint location, String name, String phone, String photo) {
         this.address = address;
         this.by = by;
+        this.city = city;
         this.id = id;
         this.location = location;
         this.name = name;
@@ -76,5 +77,13 @@ public class Donate implements Serializable {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
     }
 }

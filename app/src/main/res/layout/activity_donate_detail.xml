@@ -23,12 +23,19 @@
             android:textSize="30sp"/>
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="match_parent"
             android:text="@string/food"
             android:textColor="@color/orange_700"
             android:textStyle="bold"
             android:textSize="30sp"/>
+
+        <ImageView
+            android:id="@+id/make_call"
+            android:layout_width="50dp"
+            android:layout_height="match_parent"
+            android:src="@drawable/ic_outline_local_phone_24" />
 
     </LinearLayout>
 
@@ -67,5 +74,14 @@
         android:textStyle="bold"
         android:layout_marginTop="2dp"
         android:paddingHorizontal="10dp" />
+
+    <Button
+        android:id="@+id/remove_active_donation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="10dp"
+        android:layout_marginTop="20dp"
+        android:text="@string/remove_from_active_donation"
+        android:visibility="invisible"/>
 
 </LinearLayout>
