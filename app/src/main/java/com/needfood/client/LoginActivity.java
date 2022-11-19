@@ -10,6 +10,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.messaging.FirebaseMessaging;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class LoginActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
@@ -45,6 +50,19 @@ public class LoginActivity extends AppCompatActivity {
                 Toast.makeText(this, "Fields are required.", Toast.LENGTH_SHORT).show();
             } else {
                 mAuth.signInWithEmailAndPassword(email, password).addOnSuccessListener(authResult -> {
+                    FirebaseMessaging.getInstance().getToken().addOnSuccessListener(s -> {
+                        Map<String, Object> map = new HashMap<>();
+                        map.put("msgToken", s);
+                        FirebaseFirestore.getInstance().collection("user").document(FirebaseAuth.getInstance().getUid()).update(map).addOnSuccessListener(unused -> {
+                            toHomeActivity();
+                        }).addOnFailureListener(e -> {
+                            Toast.makeText(this, "Unable to Login.", Toast.LENGTH_SHORT).show();
+                            mAuth.signOut();
+                        });
+                    }).addOnFailureListener(e -> {
+                        Toast.makeText(this, "Unable to Login.", Toast.LENGTH_SHORT).show();
+                        mAuth.signOut();
+                    });
                     toHomeActivity();
                 }).addOnFailureListener(e -> {
                     Toast.makeText(this, "Unable to Login.", Toast.LENGTH_SHORT).show();
