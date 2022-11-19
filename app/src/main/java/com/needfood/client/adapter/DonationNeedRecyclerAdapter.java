@@ -30,6 +30,8 @@ public class DonationNeedRecyclerAdapter extends FirestoreRecyclerAdapter<Donate
             intent.putExtra("LAT", donate.getLocation().getLatitude());
             intent.putExtra("LONG", donate.getLocation().getLongitude());
             intent.putExtra("NAME", donate.getName());
+            intent.putExtra("PHONE", donate.getPhone());
+            intent.putExtra("ADDRESS", donate.getAddress());
             view.getContext().startActivity(intent);
         });
     }
